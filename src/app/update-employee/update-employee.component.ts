@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { EmployeeService } from '../service/employee.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-update-employee',
@@ -64,7 +65,7 @@ export class UpdateEmployeeComponent {
   });
 
 constructor(private _global:EmployeeService,private toastr:ToastrService,
-  private route: ActivatedRoute,private router:Router){
+  private route: ActivatedRoute,private router:Router,private location: Location){
   this.empId = this.route.snapshot.params['id'];
   this.employeeForm.setValidators(this.confirmPasswordValidator);
   this._global.getSelectedDepartment().subscribe((data:any) =>{
@@ -104,7 +105,9 @@ test(){
   })
   }
 
-
+  goBack(): void {
+    this.location.back();
+  }
   openFileManager() {
     this.fileInput.nativeElement.click();
   }

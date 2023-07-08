@@ -9,7 +9,7 @@ export class EmployeeService {
   public local_url = 'http://localhost:4000'
   constructor(private http: HttpClient) {
 
-   }
+  }
    getAllEmployees(){
     return this.http.get<any[]>(`${this.api_url}/admin-emp`);
    }

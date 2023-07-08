@@ -24,12 +24,20 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatNativeDateModule} from '@angular/material/core';
 import { UpdateEmployeeComponent } from './update-employee/update-employee.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GetDepartmentsComponent } from './departments/get-departments/get-departments.component';
+import { AddDepartmentComponent } from './departments/add-department/add-department.component';
+import { DepartmentDetailsComponent } from './departments/department-details/department-details.component';
+import { UpdateDepartmentComponent } from './departments/update-department/update-department.component';
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
     AddEmployeeComponent,
     UpdateEmployeeComponent,
+    GetDepartmentsComponent,
+    AddDepartmentComponent,
+    DepartmentDetailsComponent,
+    UpdateDepartmentComponent,
   ],
   imports: [
     BrowserModule,
