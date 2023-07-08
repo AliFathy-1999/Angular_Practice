@@ -23,6 +23,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatNativeDateModule} from '@angular/material/core';
 import { UpdateEmployeeComponent } from './update-employee/update-employee.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +56,8 @@ import { UpdateEmployeeComponent } from './update-employee/update-employee.compo
     }),
     MatDatepickerModule,
     MatFormFieldModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    FontAwesomeModule
   ],
   providers: [
     {

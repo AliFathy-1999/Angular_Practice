@@ -19,4 +19,13 @@ export class EmployeeService {
   addEmployee(obj:any) {
     return this.http.post(`${this.local_url}/admin-emp`,obj);
   }
+  getEmployeeDetails(id:any): Observable<any> {
+    return this.http.get<any[]>(`${this.local_url}/${id}`);
+  }
+  deleteEmployee(id: any): Observable<any> {
+    return this.http.delete(`${this.local_url}/admin-emp/${id}`);
+  }
+  updateEmployee(id:any,obj:any): Observable<any> {
+    return this.http.put(`${this.local_url}/admin-emp/${id}`,obj);
+  }
 }

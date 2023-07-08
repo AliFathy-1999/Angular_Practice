@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Component, inject } from '@angular/core';
 
-import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { EmployeeService } from '../service/employee.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -14,8 +14,11 @@ import { ToastrService } from 'ngx-toastr';
 export class AddEmployeeComponent {
   currentYear = new Date().getFullYear();
   departments:any;
+  selectedFile!: File;
   private fb = inject(FormBuilder);
-  employeeForm = this.fb.group({
+  file:any
+  uploadStatus: boolean = false
+  employeeForm :FormGroup = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern('^[A-Za-z\\s]+$')]],
     lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern('^[A-Za-z\\s]+$')]],
     userName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
@@ -39,6 +42,7 @@ export class AddEmployeeComponent {
     salary: ['', [Validators.required, Validators.min(3500), Validators.max(200000)]],
     phoneNumber: ['', [Validators.required, Validators.pattern('^(00201|\\+201|01)[0-2,5]{1}[0-9]{8}$')]],
     address: ['', [Validators.required,Validators.minLength(5), Validators.maxLength(150)]],
+    pImage: [null, []]
   });
 
 constructor(private _global:EmployeeService,private toastr:ToastrService){
@@ -51,6 +55,14 @@ constructor(private _global:EmployeeService,private toastr:ToastrService){
 test(){
   this.toastr.success("yes we do it")
 }
+// onFileSelected(event: any) {
+//   this.selectedFile = <File>event.target.files[0];
+// }
+onFileSelect(event: any) {
+  this.file = event.target.files
+  this.uploadStatus = true
+};
+
   hasUnitNumber = false;
   confirmPasswordValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');
@@ -77,13 +89,34 @@ test(){
   })
   }
 
-  onSubmit(): void {
-      console.log(this.employeeForm.valid);
-
-      this._global.addEmployee(this.employeeForm.value).subscribe(employee => {
-        this.toastr.success('success');
-      },(err:Error)=>{
+  onSubmit(employeeForm: FormGroup): void {
+    if (this.file != null) {
+      const formData = new FormData();
+      formData.append('firstName', employeeForm.get('firstName')?.value);
+      formData.append('lastName', employeeForm.get('lastName')?.value);
+      formData.append('userName', employeeForm.get('userName')?.value);
+      formData.append('password', employeeForm.get('password')?.value);
+      formData.append('DOB', employeeForm.get('DOB')?.value);
+      formData.append('email', employeeForm.get('email')?.value);
+      formData.append('gender', employeeForm.get('gender')?.value);
+      formData.append('position', employeeForm.get('position')?.value);
+      formData.append('hireDate', employeeForm.get('hireDate')?.value);
+      formData.append('jobType', employeeForm.get('jobType')?.value);
+      formData.append('nationalId', employeeForm.get('nationalId')?.value);
+      formData.append('salary', employeeForm.get('salary')?.value);
+      formData.append('depId', employeeForm.get('depId')?.value);
+      formData.append('academicQualifications[college]', employeeForm.get('academicQualifications')?.get('college')?.value);
+      formData.append('academicQualifications[degree]', employeeForm.get('academicQualifications')?.get('degree')?.value);
+      formData.append('academicQualifications[institution]', employeeForm.get('academicQualifications')?.get('institution')?.value);
+      formData.append('academicQualifications[year]', employeeForm.get('academicQualifications')?.get('year')?.value);
+      formData.append('phoneNumber', employeeForm.get('phoneNumber')?.value);
+      formData.append('address', employeeForm.get('address')?.value);
+      formData.append('pImage', this.file[0]);
+      this._global.addEmployee(formData).subscribe(employee => {
+        this.toastr.success('Employee added successfully');
+      },(err:any)=>{
         this.toastr.error(err.message)
       })
+    }
   }
 }

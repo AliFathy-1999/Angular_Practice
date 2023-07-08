@@ -6,7 +6,9 @@ import { MatSort } from '@angular/material/sort';
 import { TableDataSource, TableItem } from './table-datasource';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { faEye,faSquarePen,faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -20,13 +22,15 @@ export class TableComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   filterValue: string ='';
   isLoading: boolean = false;
+  faEye = faEye;faSquarePen=faSquarePen;faTrash=faTrash
   value = 'Clear me';
 
-  displayedColumns = ['_id', 'firstName', 'lastName','userName','email','position','jobType','phoneNumber'];
+  displayedColumns = ['_id', 'firstName', 'lastName','userName','email','position','jobType','phoneNumber','actions'];
 
 
 
-  constructor(private http: HttpClient,private employeeService:EmployeeService) {
+  constructor(private http: HttpClient,private employeeService:EmployeeService,
+    private router:Router,private toastr:ToastrService) {
     this.dataSource = new MatTableDataSource<any>();
    }
 
@@ -70,5 +74,19 @@ export class TableComponent implements OnInit {
         this.dataSource.data = data.data.docs;
         this.isLoading = false;
       });
+  }
+  gotoUpdateEmp(id:any){
+    this.router.navigate(['/updateEmployee/' + id]);
+  }
+  gotoEmpDetails(id:any){
+    this.router.navigate(['/employeeDetails/' + id]);
+  }
+  deleteEmployee(empId:any){
+    this.employeeService.deleteEmployee(empId).subscribe(data => {
+      this.toastr.success(`Employee with id : ${empId} deleted successfully`)
+      this.ngOnInit()
+    },(err)=>{
+      this.toastr.success(`Failed to Delete Employee with id : ${empId}`)
+    })
   }
 }

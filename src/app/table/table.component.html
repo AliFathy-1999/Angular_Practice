@@ -13,7 +13,7 @@
     <ng-container matColumnDef="pImage">
       <th mat-header-cell *matHeaderCellDef> Employee Profile </th>
       <td mat-cell *matCellDef="let element">
-        <img [src]="element.pImage" alt="" class="profile-image" class="w-25">
+        <img [src]="element.pImage" alt="" class="profile-image" [width]="110"[height]="100">
       </td>
     </ng-container>
     <ng-container matColumnDef="firstName">
@@ -44,8 +44,22 @@
       <th mat-header-cell *matHeaderCellDef class="table-header"> Phone Number  </th>
       <td mat-cell *matCellDef="let element"> {{ element.phoneNumber  }} </td>
     </ng-container>
-    <tr mat-header-row class="table-header-row" *matHeaderRowDef="['_id', 'pImage', 'firstName', 'lastName','userName','email','position','jobType','phoneNumber']"></tr>
-    <tr mat-row  class="table-row" *matRowDef="let row; columns: ['_id', 'pImage', 'firstName', 'lastName','userName','email','position','jobType','phoneNumber'];"></tr>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="table-header"> Actions </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="gotoEmpDetails(element._id)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="gotoUpdateEmp(element._id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteEmployee(element._id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row class="table-header-row" *matHeaderRowDef="['_id', 'pImage', 'firstName', 'lastName', 'userName', 'email', 'position', 'jobType', 'phoneNumber', 'actions']"></tr>
+    <tr mat-row class="table-row" *matRowDef="let row; columns: ['_id', 'pImage', 'firstName', 'lastName', 'userName', 'email', 'position', 'jobType', 'phoneNumber', 'actions'];"></tr>
   </table>
   <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20 ]"  showFirstLastButtons></mat-paginator>
 
